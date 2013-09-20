@@ -8,8 +8,12 @@ public class AtoI {
 
     public static void main(String... args) {
         for (String arg : args) {
-            AtoI a = new AtoI(arg);
-            System.out.println("result: " +(a.convertStringToInt()));
+            try {
+                AtoI a = new AtoI(arg);
+                System.out.println((a.convertStringToInt()));
+            } catch (NumberFormatException ne) {
+                System.out.println(-1);
+            }
         }
     }
 
@@ -25,9 +29,8 @@ public class AtoI {
         if (input.isEmpty()) {
             throw new NumberFormatException("empty string.");
         }
-        int i=0;
         int digit = 0;
-        while (i < input.length()) {
+        for(int i=0; i<input.length(); i++) {
             if (i==0) { // first char
                 if (input.charAt(i)=='-') {
                     // set negative here
@@ -45,7 +48,6 @@ public class AtoI {
                     throw new NumberFormatException("invalid string 2.");
                 }
             }
-            i++;
         }
         return sign*result;
     }

@@ -1,23 +1,31 @@
 package com.example.test;
 
+/**
+ * This class converts a string to integer
+ */
 public class AtoI {
-    static int radix = 10;
+    final static int RADIX = 10;
 
     public static void main(String... args) {
         for (String arg : args) {
             try {
                 System.out.println((AtoI.convertStringToInt(arg)));
             } catch (NumberFormatException ne) {
-                System.out.println(ne.toString());
+                // System.out.println(ne.toString());
                 System.out.println(-1);
             }
         }
     }
 
     public AtoI() {
-        this.radix = 10;
     }
 
+    /**
+     * This method calls charToInt to decodes each character in a 
+     * input string into integer digits, it thens iterates and
+     * multiply the result with radix value and adding the decoded
+     * digit to form the final converted integer value.
+     */
     public static int convertStringToInt(String input) {
         int result = 0;
         int sign = -1;
@@ -45,10 +53,10 @@ public class AtoI {
             } else {
                 // process the rest
                 if ((digit=charToInt(input.charAt(i))) != -1 ) {
-                    if (result < max_value / radix) {
+                    if (result < max_value / RADIX) {
                         throw new NumberFormatException("number exceeds integer boundary.");
                     }
-                    result = result * radix;
+                    result = result * RADIX;
                     if (result < max_value + digit) {
                         throw new NumberFormatException("number exceeds integer boundary.");
                     }

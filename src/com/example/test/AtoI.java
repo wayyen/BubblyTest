@@ -9,10 +9,20 @@ public class AtoI {
     public static void main(String... args) {
         for (String arg : args) {
             try {
-                System.out.println((AtoI.convertStringToInt(arg)));
+                System.out.println(
+                    String.format(
+                        "The value is: %d", 
+                        (AtoI.convertStringToInt(arg))
+                    )
+                );
             } catch (NumberFormatException ne) {
                 // System.out.println(ne.toString());
-                System.out.println(-1);
+                System.out.println(
+                    String.format(
+                        "The value is: %d", 
+                        -1
+                    )
+                );
             }
         }
     }

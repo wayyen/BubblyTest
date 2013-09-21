@@ -1,3 +1,4 @@
 #!/bin/sh
+mkdir -p classes
 javac -d classes src/com/example/test/*.java
 java -cp classes com.example.test.AtoI $@

@@ -1,28 +1,27 @@
 package com.example.test;
 
 public class AtoI {
-    int result = 0;
-    String input = "";
-    int sign = 1;
-    int radix = 10;
+    static int radix = 10;
 
     public static void main(String... args) {
         for (String arg : args) {
             try {
-                AtoI a = new AtoI(arg);
-                System.out.println((a.convertStringToInt()));
+                System.out.println((AtoI.convertStringToInt(arg)));
             } catch (NumberFormatException ne) {
+                System.out.println(ne.toString());
                 System.out.println(-1);
             }
         }
     }
 
-    public AtoI(String input) {
-        this.input = input;
+    public AtoI() {
         this.radix = 10;
     }
 
-    private int convertStringToInt() {
+    public static int convertStringToInt(String input) {
+        int result = 0;
+        int sign = -1;
+        int max_value = -Integer.MAX_VALUE;
         if (input == null) {
             throw new NumberFormatException("null string.");
         }
@@ -33,19 +32,29 @@ public class AtoI {
         for(int i=0; i<input.length(); i++) {
             if (i==0) { // first char
                 if (input.charAt(i)=='-') {
-                    // set negative here
-                    sign = -1;
+                    sign = 1;
+                    max_value = Integer.MIN_VALUE;
+                    if (input.length() == 1) {
+                        throw new NumberFormatException("invalid string.");
+                    }
                 } else if ((digit=charToInt(input.charAt(i))) != -1) {
-                    result += digit;
+                    result -= digit;
                 } else {
-                    throw new NumberFormatException("invalid string 1.");
+                    throw new NumberFormatException("invalid string.");
                 }
             } else {
                 // process the rest
                 if ((digit=charToInt(input.charAt(i))) != -1 ) {
-                    result = result * radix + digit; 
+                    if (result < max_value / radix) {
+                        throw new NumberFormatException("number exceeds integer boundary.");
+                    }
+                    result = result * radix;
+                    if (result < max_value + digit) {
+                        throw new NumberFormatException("number exceeds integer boundary.");
+                    }
+                    result = result - digit; 
                 } else {
-                    throw new NumberFormatException("invalid string 2.");
+                    throw new NumberFormatException("invalid string.");
                 }
             }
         }
@@ -56,7 +65,7 @@ public class AtoI {
     * This is a strip-down replacement for Character.digit()
     * and it only supports radix of 10. 
     */
-    private int charToInt(char ch) { 
+    public static int charToInt(char ch) { 
         switch (ch) {
             case '0':
                 return 0;
